@@ -7,10 +7,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Winneon/file.git"
+    "url": "https://github.com/WorldsCollideNetwork/file.git"
   },
   "bugs": {
-    "url": "https://github.com/Winneon/file/issues",
+    "url": "https://github.com/WorldsCollideNetwork/file/issues",
     "email": "winneonsword@gmail.com"
   },
   "dependencies": {
