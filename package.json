@@ -1,0 +1,21 @@
+{
+  "name": "wcn-file",
+  "version": "0.0.1",
+  "description": "The Worlds Collide Network File Upload System.",
+  "author": "Jesse Bryan <winneonsword@gmail.com> (http://winneon.moe/)",
+  "homepage": "http://file.worldscolli.de/",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Winneon/file.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Winneon/file/issues",
+    "email": "winneonsword@gmail.com"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "socket.io": "^1.3.6"
+  }
+}

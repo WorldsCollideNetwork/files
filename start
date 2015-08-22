@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DIR=$(pwd)
+cd "$(dirname '${BASH_SOURCE[0]}')"
+
+function handle(){
+	cd "$DIR"
+	exit 0
+}
+
+trap handle SIGINT
+cd src
+
+while true
+do
+	node index
+done

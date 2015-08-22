@@ -1,0 +1,24 @@
+#!/bin/bash
+
+mapfile missing <<EOF
+commit: missing operand
+try './commit <message>' to push a commit.
+EOF
+
+if [[ -n "$1" ]]
+then
+	DIR=$(pwd)
+	cd "$(dirname '${BASH_SOURCE[0]}')"
+
+	git describe --tags --long | \
+	cut -f 1,2 -d "-" | \
+	tr -d "\n" > src/VERSION_DEVEL
+
+	git add --all
+	git commit -m "$1"
+	git push origin master
+
+	cd "$DIR"
+else
+	printf %s "${missing[@]}"
+fi
