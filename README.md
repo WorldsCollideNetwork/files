@@ -1,4 +1,4 @@
-# WCN File Upload System
+# WCN Files
 This is the source repository for the WCN File Upload System.
 
 This system is intended as remote file storage for WCN's users, ranging from images to text documents to compressed archives.
