@@ -9,5 +9,11 @@ This program is not intended to run on any server excluding WCN. If you wish to 
 Create a `CONFIG.json` file in `src/` with the following properties.
 
 	{
-		"port": 80
+		"port": 80,
+		"login_request": "http://worldscolli.de/api/login",
+		"archive_prefix": "http://f.worldscolli.de/",
+		"encryption": {
+			"algorithm": "blowfish",
+			"password": "SAMPLE_PASS_HERE"
+		}
 	}

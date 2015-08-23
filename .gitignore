@@ -1,2 +1,5 @@
 node_modules/
+src/files/
+
 src/CONFIG.json
+src/URLS.json

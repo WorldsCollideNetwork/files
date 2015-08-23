@@ -9,11 +9,29 @@ var app      = express(),
 
 var users    = require("./users");
 
-// view engine
+// generic variables
 app.set("view engine", "jade");
+app.set("views", path.join(__dirname, "views"));
+app.set("files", path.join(__dirname, "files"));
+
+try {
+	app.set("urls", require("./URLS.json"));
+} catch (e){
+	app.set("urls", { });
+}
+
+// check if files directory exists
+if (!fs.existsSync(app.get("files"))){
+	fs.mkdirSync(app.get("files"));
+}
+
+// user folders
+require("./utils").get_dirs(app.get("files")).forEach(function(dir){
+	app.set(dir, path.join(app.get("files"), dir));
+});
 
 // generic middleware
-app.use(express.static(path.join(__dirname, "views")));
+app.use(express.static(app.get("views")));
 app.use(busboy({
 	immediate: true
 }));
@@ -26,39 +44,31 @@ app.use(function(req, res, next){
 	next();
 });
 
-// upload listener
-app.post("/upload", function(req, res){
-	req.pipe(req.busboy);
-
-	req.busboy.on("field", function(field, val){
-		if (!req.body) req.body = { };
-		req.body[field] = val;
-	});
-
-	req.busboy.on("file", function(field, file, name){
-		console.log(req.body);
-		console.log("Uploading: " + name);
-
-		var fstream = fs.createWriteStream(path.join(__dirname, "files", name));
-		file.pipe(fstream);
-
-		fstream.on("close", function(){
-			console.log("Done.");
-			res.json({
-				"success": true
-			});;
-		});
-	});
-});
+require("./router")(app, users);
 
 // HTTP protocol listener
-app.get("/", function(req, res){
-	res.render("index");
+app.get("*", function(req, res){
+	var url = req.url.split("?")[0];
+
+	if (url == "/"){
+		res.render("index");
+	} else {
+		url = app.get("urls")[url.replace("/", "")];
+
+		if (url){
+			var split = url.split(",");
+			res.sendFile(path.join(app.get(split[0]), split[1]));
+		} else {
+			res.send("404");
+		}
+	}
 });
 
 // SIGINT listener
 process.stdin.resume();
 process.on("SIGINT", function(){
-	users.save();
+	require("./utils").save(app.get("urls"));
+
+	console.log("SAVED URLS.");
 	process.exit();
 });
