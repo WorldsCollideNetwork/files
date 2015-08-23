@@ -53,13 +53,24 @@ app.get("*", function(req, res){
 	if (url == "/"){
 		res.render("index");
 	} else {
-		url = app.get("urls")[url.replace("/", "")];
+		url = url.substring(1);
+		file = app.get("urls")[url];
 
-		if (url){
-			var split = url.split(",");
-			res.sendFile(path.join(app.get(split[0]), split[1]));
+		if (file){
+			var split = file.split(","),
+			    end   = path.join(app.get(split[0]), split[1]);
+
+			if (fs.existsSync(end)){
+				res.sendFile(end);
+			} else {
+				res.render("404");
+			}
 		} else {
-			res.send("404");
+			if (fs.existsSync(path.join(app.get("views"), url + ".jade"))){
+				res.render(url);
+			} else {
+				res.render("404");
+			}
 		}
 	}
 });
