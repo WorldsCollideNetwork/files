@@ -32,9 +32,7 @@ require("./utils").get_dirs(app.get("files")).forEach(function(dir){
 
 // generic middleware
 app.use(express.static(app.get("views")));
-app.use(busboy({
-	immediate: true
-}));
+app.use(busboy());
 
 // middleware for jade files
 app.use(function(req, res, next){
