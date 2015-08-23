@@ -1,7 +1,7 @@
-doctype html
-html
-	head
-		title WCN Files (beta) #{version}
-		script(type="text/javascript", src="//code.jquery.com/jquery-2.1.4.min.js")
-	body
-		p test
+extends core
+block content
+	h2 Request a Client ID
+	form(action="/clientid", method="post")
+		input(type="text", name="username", placeholder="Username")
+		input(type="password", name="password", placeholder="Password")
+		button(type="submit", name="submit")

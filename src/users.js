@@ -1,7 +1,9 @@
 var utils = require("./utils");
 
 function Users(){
-	this.login = function(res, data){
+	this.login = function(req, res){
+		var data = req.body;
+
 		if (data.username && data.password){
 			require("request")({
 				method: "POST",
@@ -17,22 +19,40 @@ function Users(){
 					});
 				} else {
 					if (body.success){
+						var id = utils.encrypt(data.username);
+
 						console.log("REQUESTED CLIENT ID.");
 						console.log("- USER: " + data.username);
 
-						res.json({
+						res.render("clientid", {
 							status: 0,
-							client_id: utils.encrypt(data.username)
+							id: id,
+							json: JSON.stringify({
+								"Name": "WCN Files",
+								"RequestType": "POST",
+								"RequestURL": require("./CONFIG.json").archive_prefix + "upload",
+								"FileFormName": "file",
+								"Arguments": {
+									"client_id": id
+								},
+								"ResponseType": "Text",
+								"RegexList": [
+									"\"url\":\"(.+?)\""
+								],
+								"URL": "$1,1$",
+								"ThumbnailURL": "",
+								"DeletionURL": ""
+							}, null, "\t")
 						});
 					} else {
-						res.json({
+						res.render("clientid", {
 							status: 2
 						});
 					}
 				}
 			});
 		} else {
-			res.json({
+			res.render("clientid", {
 				status: 2
 			});
 		}

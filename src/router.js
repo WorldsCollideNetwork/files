@@ -3,16 +3,14 @@ var path      = require("path"),
 
 module.exports = function(app, users){
 	// login listener
-	app.post("/login", function(req, res){
-		req.pipe(req.busboy);
-
+	app.post("/clientid", function(req, res){
 		req.busboy.on("field", function(field, val){
 			if (!req.body) req.body = { };
 			req.body[field] = val;
 		});
 
 		req.busboy.on("finish", function(){
-			users.login(res, req.body);
+			users.login(req, res);
 		});
 	});
 
