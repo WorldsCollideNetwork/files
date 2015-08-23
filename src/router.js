@@ -4,6 +4,8 @@ var path      = require("path"),
 module.exports = function(app, users){
 	// login listener
 	app.post("/clientid", function(req, res){
+		req.pipe(req.busboy);
+		
 		req.busboy.on("field", function(field, val){
 			if (!req.body) req.body = { };
 			req.body[field] = val;
