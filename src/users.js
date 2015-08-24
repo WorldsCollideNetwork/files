@@ -48,10 +48,10 @@ function Users(app){
 		return utils.decrypt(client_id);
 	};
 
-	this.render_manage = function(res){
+	this.render_manage = function(res, username){
 		res.render("manage", {
 			status: 0,
-			thumbs: require("./utils").thumbs(app, data.username)
+			thumbs: require("./utils").thumbs(app, username)
 		});
 	};
 
