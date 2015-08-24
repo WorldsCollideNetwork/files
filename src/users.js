@@ -73,4 +73,4 @@ function Users(app){
 	};
 }
 
-module.exports = Users;
+module.exports = new Users;
