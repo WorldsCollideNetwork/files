@@ -71,6 +71,8 @@ function Users(app){
 	this.get = function(client_id){
 		return utils.decrypt(client_id);
 	};
+
+	return this;
 }
 
-module.exports = new Users;
+module.exports = Users;
