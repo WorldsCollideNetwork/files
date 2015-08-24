@@ -53,6 +53,8 @@ app.use(busboy());
 app.use(function(req, res, next){
 	res.locals.port = require("./CONFIG.json").port;
 	res.locals.version = fs.readFileSync(path.join(__dirname, "VERSION_DEVEL"), "utf8");
+	
+	res.locals.prefix = require("./CONFIG.json").archive_prefix;
 
 	if (req.cookies.user){
 		res.locals.id = req.cookies.user;

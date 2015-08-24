@@ -44,8 +44,7 @@ function Users(app){
 
 						res.render("manage", {
 							status: 0,
-							thumbs: thumbs,
-							prefix: require("./CONFIG.json").archive_prefix
+							thumbs: thumbs
 						});
 					} else {
 						res.render("manage", {
