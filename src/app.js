@@ -2,6 +2,7 @@ var http     = require("http"),
     path     = require("path"),
     fs       = require("fs"),
     express  = require("express"),
+    cookie   = require("cookie-parser"),
     busboy   = require("connect-busboy");
 
 var app      = express(),
@@ -45,6 +46,7 @@ require("./utils").get_dirs(app.get("thumb")).forEach(function(dir){
 
 // generic middleware
 app.use(express.static(app.get("views")));
+app.use(cookie());
 app.use(busboy());
 
 // middleware for jade files
