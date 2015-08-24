@@ -9,10 +9,13 @@ var app      = express(),
 
 var users    = require("./users");
 
-// generic variables
+// view engine
 app.set("view engine", "jade");
+
+// directory vairables
 app.set("views", path.join(__dirname, "views"));
 app.set("files", path.join(__dirname, "files"));
+app.set("thumb", path.join(__dirname, "thumb"))
 
 try {
 	app.set("urls", require("./URLS.json"));
@@ -25,9 +28,19 @@ if (!fs.existsSync(app.get("files"))){
 	fs.mkdirSync(app.get("files"));
 }
 
+// check if thumb directory exists
+if (!fs.existsSync(app.get("thumb"))){
+	fs.mkdirSync(app.get("thumb"));
+}
+
 // user folders
 require("./utils").get_dirs(app.get("files")).forEach(function(dir){
 	app.set(dir, path.join(app.get("files"), dir));
+});
+
+// thumb folders
+require("./utils").get_dirs(app.get("thumb")).forEach(function(dir){
+	app.set("thumb-" + dir, path.join(app.get("thumb"), dir))
 });
 
 // generic middleware

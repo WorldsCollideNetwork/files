@@ -1,5 +1,5 @@
-var path      = require("path"),
-    fs        = require("fs");
+var path  = require("path"),
+    fs    = require("fs");
 
 module.exports = function(app, users){
 	// login listener
@@ -27,31 +27,57 @@ module.exports = function(app, users){
 
 		req.busboy.on("file", function(field, file, name){
 			if (req.body && req.body.client_id){
+				// generic variables
 				var user = users.get(req.body.client_id),
-				    end  = require("./utils").complex_timestamp() + path.extname(name),
-				    rand = undefined;
+				    ext  = path.extname(name),
+				    end  = require("./utils").complex_timestamp() + ext;
 
-				console.log("UPLOADING.");
+				// generic logging
+				console.log("UPLOAD.");
 				console.log("- USER: " + user);
-				console.log("- FILE: " + name);
+				console.log("- TYPE: " + ext);
 
 				// check if user directory exists
 				if (!app.get(user) || !fs.existsSync(app.get(user))){
-					fs.mkdirSync(path.join(app.get("files"), user));
-					app.set(user, path.join(app.get("files"), user));
+					var path = path.join(app.get("files"), user);
+
+					fs.mkdirSync(path);
+					app.set(user, path);
 				}
 
+				// check if thumb user directory exists
+				if (!app.get("thumb-" + user) || !fs.existsSync(app.get("thumb-" + user))){
+					var path = path.join(app.get("thumb"), user);
+
+					fs.mkdirSync(path);
+					app.set("thumb-" + user, path);
+				}
+
+				// directory variables
+				var write = path.join(app.get(user), end),
+				    thumb = path.join(app.get("thumb-" + user), end);
+
+				// random string generator
 				while (!rand || app.get("urls")[rand]){
-					rand = require("./utils").generate_string() + path.extname(name);
+					rand = require("./utils").generate_string() + ext;
 				}
 
-				var fstream = fs.createWriteStream(path.join(app.get(user), end));
+				// stream buffer into file
+				var fstream = fs.createWriteStream(write);
 				file.pipe(fstream);
 
+				// finish event
 				fstream.on("close", function(){
-					console.log("UPLOAD COMPLETE.");
-					console.log("- USER: " + user);
+					// thumb creation
+					if (!/^win/.test(process.platform)){
+						require("lwip").open(write, function(err, image){
+							image.resize(100, function(err, image){
+								image.writeFile(thumb, function(err){ })
+							});
+						});
+					}
 
+					// redirect url
 					app.get("urls")[rand] = user + "," + end;
 
 					try {
