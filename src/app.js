@@ -65,11 +65,18 @@ app.get("*", function(req, res){
 		res.render("index");
 	} else {
 		url = url.substring(1);
-		file = app.get("urls")[url];
+		file = app.get("urls")[url.replace("thumb/", "")];
 
 		if (file){
 			var split = file.split(","),
-			    end   = path.join(app.get(split[0]), split[1]);
+			    end   = undefined;
+
+			// check if url is a thumb
+			if (url.indexOf("thumb/") == 0){
+			    end = path.join(app.get("thumb-" + split[0]), split[1]);
+			} else {
+				end = path.join(app.get(split[0]), split[1]);
+			}
 
 			if (fs.existsSync(end)){
 				res.sendFile(end);
