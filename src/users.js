@@ -41,7 +41,7 @@ function Users(app){
 						res.render("manage", {
 							status: 0,
 							id: id,
-							thumbs: thumb,
+							thumbs: thumbs,
 							json: JSON.stringify({
 								"Name": "WCN Files",
 								"RequestType": "POST",
