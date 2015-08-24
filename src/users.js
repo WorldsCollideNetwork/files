@@ -31,12 +31,8 @@ function Users(app){
 								app.get("urls")[i].indexOf(data.username) == 0){
 								var file = app.get("urls")[i].split(",")[1];
 
-								console.log(require("./utils").get_files(
-										app.get("thumb-" + data.username)));
-								console.log(file);
-
 								if (require("./utils").get_files(
-										app.get("thumb-" + data.username)).indexOf(file) == 0){
+										app.get("thumb-" + data.username)).indexOf(file) > -1){
 									thumbs[i] = "/thumb/" + i;
 								}
 							}
