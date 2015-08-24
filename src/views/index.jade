@@ -1,7 +1,7 @@
 extends core
 block content
-	h2 Request a Client ID
-	form(action="/clientid", method="post")
+	h2 Login
+	form(action="/manage", method="post")
 		input(type="text", name="username", placeholder="Username")
 		input(type="password", name="password", placeholder="Password")
 		button(type="submit", name="submit")

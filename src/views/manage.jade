@@ -1,0 +1,25 @@
+extends core
+block css
+	link(rel="stylesheet", type="text/css", href="/css/manage.css")
+block content
+	if status == 0
+		h2 Client ID
+		p The following is your client ID. Click 
+			a(href="/sharex") here 
+			| for instructions to set it up with ShareX.
+		code= id
+		h2 Uploaded Images
+		p You have uploaded a total of 
+			b #{Object.getOwnPropertyNames(thumbs).length} 
+			| images.
+		div.thumbs
+			each val, i in thumbs
+				div.thumb
+					a(href=val, style="background-image: url(" + i + ")")
+	else
+		h2 Invalid Credentials
+		p The credentials you entered are not correct.
+		p
+			| Make sure you have registered an account at 
+			a(href="http://worldscolli.de", target="_blank") worldscolli.de 
+			| , and then click on the title at the top of this page to return to the form.

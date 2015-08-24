@@ -3,6 +3,7 @@ html
 	head
 		title WCN Files (beta) #{version}
 		link(rel="stylesheet", type="text/css", href="/css/style.css")
+		block css
 		script(type="text/javascript", src="//code.jquery.com/jquery-2.1.4.min.js")
 	body
 		div
@@ -13,3 +14,4 @@ html
 			div.content
 				block content
 			div.copyright Copyright &copy; 2015 Worlds Collide Network
+		block js

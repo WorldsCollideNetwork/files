@@ -3,7 +3,7 @@ var path  = require("path"),
 
 module.exports = function(app, users){
 	// login listener
-	app.post("/clientid", function(req, res){
+	app.post("/manage", function(req, res){
 		req.pipe(req.busboy);
 		
 		req.busboy.on("field", function(field, val){

@@ -84,10 +84,8 @@ app.get("*", function(req, res){
 				res.render("404");
 			}
 		} else {
-			if (
-				url != "clientid" &&
-				fs.existsSync(path.join(app.get("views"), url + ".jade"))
-			){
+			if (url != "clientid" &&
+				fs.existsSync(path.join(app.get("views"), url + ".jade"))){
 				res.render(url);
 			} else {
 				res.render("404");

@@ -24,9 +24,19 @@ function Users(){
 						console.log("REQUESTED CLIENT ID.");
 						console.log("- USER: " + data.username);
 
-						res.render("clientid", {
+						var thumbs = { };
+
+						for (var i in app.get("urls")){
+							if (app.get("urls").hasOwnProperty(i) && 
+								app.get("urls")[i].indexOf(data.username) == 0){
+								thumbs[i] = "/thumb/" + i;
+							}
+						}
+
+						res.render("manage", {
 							status: 0,
 							id: id,
+							thumbs: app.get("thumb-" + data.username),
 							json: JSON.stringify({
 								"Name": "WCN Files",
 								"RequestType": "POST",
@@ -45,14 +55,14 @@ function Users(){
 							}, null, "\t")
 						});
 					} else {
-						res.render("clientid", {
+						res.render("manage", {
 							status: 2
 						});
 					}
 				}
 			});
 		} else {
-			res.render("clientid", {
+			res.render("manage", {
 				status: 2
 			});
 		}
