@@ -99,7 +99,7 @@ app.get("*", function(req, res){
 		} else {
 			if (fs.existsSync(path.join(app.get("views"), url + ".jade"))){
 				if (res.locals.user && url == "manage"){
-					users.render_manage(res);
+					users.render_manage(res, res.locals.user);
 				} else {
 					res.render(url);
 				}

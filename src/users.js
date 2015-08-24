@@ -51,6 +51,7 @@ function Users(app){
 	this.render_manage = function(res, username){
 		res.render("manage", {
 			status: 0,
+			id: require("./utils").encrypt(username),
 			thumbs: require("./utils").thumbs(app, username)
 		});
 	};
