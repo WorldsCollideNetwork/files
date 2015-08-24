@@ -36,7 +36,7 @@ function Users(app){
 						res.render("manage", {
 							status: 0,
 							id: id,
-							thumbs: app.get("thumb-" + data.username),
+							thumbs: thumbs,
 							json: JSON.stringify({
 								"Name": "WCN Files",
 								"RequestType": "POST",

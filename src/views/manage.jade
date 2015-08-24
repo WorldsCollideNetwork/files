@@ -10,7 +10,8 @@ block content
 		code= id
 		h2 Uploaded Images
 		p You have uploaded a total of 
-			b #{Object.getOwnPropertyNames(thumbs).length} 
+			- var total = Object.getOwnPropertyNames(thumbs).length
+			b= total
 			| images.
 		div.thumbs
 			each val, i in thumbs
