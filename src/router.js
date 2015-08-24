@@ -26,46 +26,38 @@ module.exports = function(app, users){
 		});
 
 		req.busboy.on("file", function(field, file, name){
-			// I have no idea why I have to make this extra declaration
-			var path = require("path");
-
 			if (req.body && req.body.client_id){
-				// generic variables
 				var user = users.get(req.body.client_id),
 				    ext  = path.extname(name),
 				    end  = require("./utils").complex_timestamp() + ext;
 
-				// generic logging
 				console.log("UPLOAD.");
 				console.log("- USER: " + user);
 				console.log("- TYPE: " + ext);
 
-				// check if user directory exists
 				if (!app.get(user) || !fs.existsSync(app.get(user))){
-					var path = path.join(app.get("files"), user);
+					var buf = path.join(app.get("files"), user);
 
-					fs.mkdirSync(path);
-					app.set(user, path);
+					fs.mkdirSync(buf);
+					app.set(user, buf);
 				}
 
-				// check if thumb user directory exists
 				if (!app.get("thumb-" + user) || !fs.existsSync(app.get("thumb-" + user))){
-					var path = path.join(app.get("thumb"), user);
+					var buf = path.join(app.get("thumb"), user);
 
-					fs.mkdirSync(path);
-					app.set("thumb-" + user, path);
+					fs.mkdirSync(buf);
+					app.set("thumb-" + user, buf);
 				}
 
-				// directory variables
 				var write = path.join(app.get(user), end),
 				    thumb = path.join(app.get("thumb-" + user), end);
 
-				// random string generator
+				var rand = undefined;
+
 				while (!rand || app.get("urls")[rand]){
 					rand = require("./utils").generate_string() + ext;
 				}
 
-				// stream buffer into file
 				var fstream = fs.createWriteStream(write);
 				file.pipe(fstream);
 
