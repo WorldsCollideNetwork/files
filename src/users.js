@@ -30,6 +30,8 @@ function Users(app){
 							if (app.get("urls").hasOwnProperty(i) && 
 								app.get("urls")[i].indexOf(data.username) == 0){
 								var file = app.get("urls")[i].split(",");
+								console.log(require("./utils").get_files(
+										app.get("thumb-" + data.username)));
 
 								if (require("./utils").get_files(
 										app.get("thumb-" + data.username)).indexOf(file) == 0){
