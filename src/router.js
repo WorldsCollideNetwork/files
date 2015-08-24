@@ -26,6 +26,9 @@ module.exports = function(app, users){
 		});
 
 		req.busboy.on("file", function(field, file, name){
+			// I have no idea why I have to make this extra declaration
+			var path = require("path");
+
 			if (req.body && req.body.client_id){
 				// generic variables
 				var user = users.get(req.body.client_id),
