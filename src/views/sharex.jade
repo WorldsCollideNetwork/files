@@ -13,6 +13,23 @@ block content
 			li Go back to the first dropdown menu, and click on "Destination settings".
 			li At the bottom of the left sidebar, click on "Custom uploaders".
 			li Copy the following code to your clipboard
+				-
+					var json = JSON.stringify({
+						"Name": "WCN Files",
+						"RequestType": "POST",
+						"RequestURL": prefix + "upload",
+						"FileFormName": "file",
+						"Arguments": {
+							"client_id": id
+						},
+						"ResponseType": "Text",
+						"RegexList": [
+							"\"url\":\"(.+?)\""
+						],
+						"URL": "$1,1$",
+						"ThumbnailURL": "",
+						"DeletionURL": ""
+					}, null, "\t")
 				code= json
 			li Click on "Import", and subsequently click on "From clipboard".
 			li Make sure the "Image uploader" dropdown has "WCN Files" selected.

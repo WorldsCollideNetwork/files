@@ -38,26 +38,14 @@ function Users(app){
 							}
 						}
 
+						res.cookie("user", id, {
+							expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
+						});
+
 						res.render("manage", {
 							status: 0,
-							id: id,
 							thumbs: thumbs,
-							json: JSON.stringify({
-								"Name": "WCN Files",
-								"RequestType": "POST",
-								"RequestURL": require("./CONFIG.json").archive_prefix + "upload",
-								"FileFormName": "file",
-								"Arguments": {
-									"client_id": id
-								},
-								"ResponseType": "Text",
-								"RegexList": [
-									"\"url\":\"(.+?)\""
-								],
-								"URL": "$1,1$",
-								"ThumbnailURL": "",
-								"DeletionURL": ""
-							}, null, "\t")
+							prefix: require("./CONFIG.json").archive_prefix
 						});
 					} else {
 						res.render("manage", {

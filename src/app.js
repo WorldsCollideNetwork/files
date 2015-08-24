@@ -52,6 +52,11 @@ app.use(function(req, res, next){
 	res.locals.port = require("./CONFIG.json").port;
 	res.locals.version = fs.readFileSync(path.join(__dirname, "VERSION_DEVEL"), "utf8");
 
+	if (req.cookies.user){
+		res.locals.id = req.cookies.user;
+		res.locals.user = utils.decrypt(req.cookies.user);
+	}
+
 	next();
 });
 
