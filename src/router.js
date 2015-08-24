@@ -63,8 +63,10 @@ module.exports = function(app, users){
 
 				// finish event
 				fstream.on("close", function(){
+					var img_exts = [".png", ".jpg", ".jpeg", ".gif"];
+
 					// thumb creation
-					if (!/^win/.test(process.platform)){
+					if (!/^win/.test(process.platform) && img_exts.indexOf(ext) > -1){
 						require("lwip").open(write, function(err, image){
 							image.resize(100, function(err, image){
 								image.writeFile(thumb, function(err){ })

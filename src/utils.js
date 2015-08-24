@@ -56,6 +56,12 @@ function Utils(){
 		});
 	};
 
+	this.get_files = function(src){
+		return fs.readdirSync(src).filter(function(file){
+			return fs.statSync(path.join(src, file)).isFile();
+		});
+	};
+
 	this.generate_string = function(){
 		return Math.random().toString(36).slice(2).substring(0, 5);
 	};
