@@ -2,7 +2,8 @@ var utils = require("./utils");
 
 function Users(app){
 	this.login = function(req, res){
-		var data = req.body;
+		var data = req.body,
+		    that = this;
 
 		if (data.username && data.password){
 			require("request")({
@@ -28,7 +29,7 @@ function Users(app){
 							expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
 						});
 
-						this.render_manage();
+						that.render_manage();
 					} else {
 						res.render("manage", {
 							status: 2
