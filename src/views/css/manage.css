@@ -1,3 +1,7 @@
+div.thumbs {
+	text-align: center;
+}
+
 div.thumbs > div.thumb {
 	display: inline-block;
 	width: 100px;

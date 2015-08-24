@@ -16,7 +16,7 @@ block content
 		div.thumbs
 			each val, i in thumbs
 				div.thumb
-					a(href=val, style="background-image: url(" + i + ")")
+					a(href=i, style="background-image: url(" + val + ")")
 	else
 		h2 Invalid Credentials
 		p The credentials you entered are not correct.
