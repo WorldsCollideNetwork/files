@@ -1,43 +1,35 @@
 extends core
 block content
-	if status == 0
-		h2 Setup with ShareX
-		p Currently, WCN Files only supports ShareX. ShareX allows for easy screenshotting via hotkeys to any web server supporting HTTP POST requests, including WCN Files. Below are some easy steps to setting up ShareX with WCN Files.
-		ol
-			li
-				| Download ShareX at 
-				a(href="https://getsharex.com", target="_blank") https://getsharex.com 
-				| and follow its provided instructions.
-			li Launch ShareX.
-			li Click on "Destinations" on the left sidebar, hover over "Image uploader: Imgur", and click on "Custom image uploader".
-			li Go back to the first dropdown menu, and click on "Destination settings".
-			li At the bottom of the left sidebar, click on "Custom uploaders".
-			li Copy the following code to your clipboard
-				-
-					var json = JSON.stringify({
-						"Name": "WCN Files",
-						"RequestType": "POST",
-						"RequestURL": prefix + "upload",
-						"FileFormName": "file",
-						"Arguments": {
-							"client_id": id
-						},
-						"ResponseType": "Text",
-						"RegexList": [
-							"\"url\":\"(.+?)\""
-						],
-						"URL": "$1,1$",
-						"ThumbnailURL": "",
-						"DeletionURL": ""
-					}, null, "\t")
-				code= json
-			li Click on "Import", and subsequently click on "From clipboard".
-			li Make sure the "Image uploader" dropdown has "WCN Files" selected.
-			li You're done! You may tweak the hotkey settings and other settings as you desire.
-	else
-		h2 Invalid Credentials
-		p The credentials you entered are not correct.
-		p
-			| Make sure you have registered an account at 
-			a(href="http://worldscolli.de", target="_blank") worldscolli.de 
-			| , and then click on the title at the top of this page to return to the form.
+	h2 Setup with ShareX
+	p Currently, WCN Files only supports ShareX. ShareX allows for easy screenshotting via hotkeys to any web server supporting HTTP POST requests, including WCN Files. Below are some easy steps to setting up ShareX with WCN Files.
+	ol
+		li
+			| Download ShareX at 
+			a(href="https://getsharex.com", target="_blank") https://getsharex.com 
+			| and follow its provided instructions.
+		li Launch ShareX.
+		li Click on "Destinations" on the left sidebar, hover over "Image uploader: Imgur", and click on "Custom image uploader".
+		li Go back to the first dropdown menu, and click on "Destination settings".
+		li At the bottom of the left sidebar, click on "Custom uploaders".
+		li Copy the following code to your clipboard
+			-
+				var json = JSON.stringify({
+					"Name": "WCN Files",
+					"RequestType": "POST",
+					"RequestURL": prefix + "upload",
+					"FileFormName": "file",
+					"Arguments": {
+						"client_id": id
+					},
+					"ResponseType": "Text",
+					"RegexList": [
+						"\"url\":\"(.+?)\""
+					],
+					"URL": "$1,1$",
+					"ThumbnailURL": "",
+					"DeletionURL": ""
+				}, null, "\t")
+			code= json
+		li Click on "Import", and subsequently click on "From clipboard".
+		li Make sure the "Image uploader" dropdown has "WCN Files" selected.
+		li You're done! You may tweak the hotkey settings and other settings as you desire.
