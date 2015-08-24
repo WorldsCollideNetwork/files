@@ -56,7 +56,7 @@ app.use(function(req, res, next){
 
 	if (req.cookies.user){
 		res.locals.id = req.cookies.user;
-		res.locals.user = utils.decrypt(req.cookies.user);
+		res.locals.user = require("./utils").decrypt(req.cookies.user);
 	}
 
 	next();
