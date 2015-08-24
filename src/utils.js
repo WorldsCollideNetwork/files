@@ -66,6 +66,24 @@ function Utils(){
 		return Math.random().toString(36).slice(2).substring(0, 5);
 	};
 
+	this.thumbs = function(app, username){
+		var thumbs = { };
+
+		for (var i in app.get("urls")){
+			if (app.get("urls").hasOwnProperty(i) && 
+				app.get("urls")[i].indexOf(username) == 0){
+				var file = app.get("urls")[i].split(",")[1];
+
+				if (require("./utils").get_files(
+						app.get("thumb-" + username)).indexOf(file) > -1){
+					thumbs[i] = "/thumb/" + i;
+				}
+			}
+		}
+
+		return thumbs;
+	};
+
 	this.save = function(data){
 		fs.writeFileSync("URLS.json", JSON.stringify(data, null, "\t"));
 	};

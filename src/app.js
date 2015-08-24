@@ -53,12 +53,12 @@ app.use(busboy());
 app.use(function(req, res, next){
 	res.locals.port = require("./CONFIG.json").port;
 	res.locals.version = fs.readFileSync(path.join(__dirname, "VERSION_DEVEL"), "utf8");
-	
+
 	res.locals.prefix = require("./CONFIG.json").archive_prefix;
 
-	if (req.cookies.user){
-		res.locals.id = req.cookies.user;
+	if (req.cookies.user && require("./utils").decrypt(req.cookies.user)){
 		res.locals.user = require("./utils").decrypt(req.cookies.user);
+		res.locals.id = req.cookies.user;
 	}
 
 	next();
@@ -71,7 +71,11 @@ app.get("*", function(req, res){
 	var url = req.url.split("?")[0];
 
 	if (url == "/"){
-		res.render("index");
+		if (res.locals.user){
+			res.redirect("manage")
+		} else {
+			res.render("index");
+		}
 	} else {
 		url = url.substring(1);
 		file = app.get("urls")[url.replace("thumb/", "")];
@@ -93,9 +97,12 @@ app.get("*", function(req, res){
 				res.render("404");
 			}
 		} else {
-			if (url != "clientid" &&
-				fs.existsSync(path.join(app.get("views"), url + ".jade"))){
-				res.render(url);
+			if (fs.existsSync(path.join(app.get("views"), url + ".jade"))){
+				if (res.locals.user && url == "manage"){
+					users.render_manage(res);
+				} else {
+					res.render(url);
+				}
 			} else {
 				res.render("404");
 			}
