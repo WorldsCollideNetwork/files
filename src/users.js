@@ -1,6 +1,6 @@
 var utils = require("./utils");
 
-function Users(){
+function Users(app){
 	this.login = function(req, res){
 		var data = req.body;
 
@@ -73,4 +73,4 @@ function Users(){
 	};
 }
 
-module.exports = new Users;
+module.exports = Users;

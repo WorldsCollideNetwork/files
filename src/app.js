@@ -7,7 +7,7 @@ var http     = require("http"),
 var app      = express(),
     server   = module.exports = http.Server(app);
 
-var users    = require("./users");
+var users    = require("./users")(app);
 
 // view engine
 app.set("view engine", "jade");
