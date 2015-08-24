@@ -29,7 +29,7 @@ function Users(app){
 							expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
 						});
 
-						that.render_manage();
+						that.render_manage(res, data.username);
 					} else {
 						res.render("manage", {
 							status: 2
