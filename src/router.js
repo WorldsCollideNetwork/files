@@ -22,7 +22,7 @@ module.exports = function(app, users){
 
 	app.get("/api/list", parser, auth, function(req, res){
 		var utils = require("./utils");
-		
+
 		res.json({
 			list: utils.list(app, utils.decrypt(req.query.client_id))
 		});
@@ -30,7 +30,7 @@ module.exports = function(app, users){
 
 	// POST listeners
 
-	app.post("/:var(api/upload|upload)", busboy, function(req, res){
+	app.post("/api/upload", busboy, function(req, res){
 		req.pipe(req.busboy);
 
 		req.busboy.on("field", function(field, val){

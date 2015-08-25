@@ -72,7 +72,7 @@ function Utils(){
 		for (var i in app.get("urls")){
 			if (app.get("urls").hasOwnProperty(i) && 
 				app.get("urls")[i].indexOf(username) == 0){
-				list.push(app.get("urls")[i].split(",")[1]);
+				list.push(require("./CONFIG.json").archive_prefix + i);
 			}
 		}
 
