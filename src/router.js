@@ -21,9 +21,11 @@ module.exports = function(app, users){
 	// GET listeners
 
 	app.get("/api/list", parser, auth, function(req, res){
-		console.log("test2");
 		var utils = require("./utils");
-		return utils.list(app, utils.decrypt(req.query.client_id));
+		
+		res.json({
+			list: utils.list(app, utils.decrypt(req.query.client_id))
+		});
 	});
 
 	// POST listeners
