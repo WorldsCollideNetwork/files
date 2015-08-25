@@ -4,16 +4,28 @@ var path   = require("path"),
     busboy = require("connect-busboy")();
 
 module.exports = function(app, users){
+	// authentication middleware
+	function auth(req, res, next){
+		if (req.body && req.body.client_id && require("./utils").decrypt(req.body.client_id)){
+			if (next) return next();
+			return true;
+		} else {
+			res.json({
+				status: 2
+			});
+		}
+	}
+
 	// GET listeners
 
-	app.get("/api/list", parser, function(req, res){
+	app.get("/api/list", parser, auth, function(req, res){
 		var utils = require("./utils");
 		return utils.list(app, utils.decrypt(req.query.client_id));
 	});
 
 	// POST listeners
 
-	app.post("/api/upload", busboy, function(req, res){
+	app.post("/:var(api/upload|upload)", busboy, function(req, res){
 		req.pipe(req.busboy);
 
 		req.busboy.on("field", function(field, val){
@@ -22,69 +34,71 @@ module.exports = function(app, users){
 		});
 
 		req.busboy.on("file", function(field, file, name){
-			var user = users.get(req.body.client_id),
-			    ext  = path.extname(name),
-			    end  = require("./utils").complex_timestamp() + ext;
+			if (auth(req, res)){
+				var user = users.get(req.body.client_id),
+				    ext  = path.extname(name),
+				    end  = require("./utils").complex_timestamp() + ext;
 
-			console.log("UPLOAD.");
-			console.log("- USER: " + user);
-			console.log("- TYPE: " + ext);
+				console.log("UPLOAD.");
+				console.log("- USER: " + user);
+				console.log("- TYPE: " + ext);
 
-			if (!app.get(user) || !fs.existsSync(app.get(user))){
-				var buf = path.join(app.get("files"), user);
+				if (!app.get(user) || !fs.existsSync(app.get(user))){
+					var buf = path.join(app.get("files"), user);
 
-				fs.mkdirSync(buf);
-				app.set(user, buf);
-			}
-
-			if (!app.get("thumb-" + user) || !fs.existsSync(app.get("thumb-" + user))){
-				var buf = path.join(app.get("thumb"), user);
-
-				fs.mkdirSync(buf);
-				app.set("thumb-" + user, buf);
-			}
-
-			var write = path.join(app.get(user), end),
-			    thumb = path.join(app.get("thumb-" + user), end);
-
-			var rand = undefined;
-
-			while (!rand || app.get("urls")[rand]){
-				rand = require("./utils").generate_string() + ext;
-			}
-
-			var fstream = fs.createWriteStream(write);
-			file.pipe(fstream);
-
-			// finish event
-			fstream.on("close", function(){
-				var img_exts = [".png", ".jpg", ".jpeg", ".gif"];
-
-				// thumb creation
-				if (!/^win/.test(process.platform) && img_exts.indexOf(ext) > -1){
-					require("lwip").open(write, function(err, image){
-						image.resize(100, function(err, image){
-							image.writeFile(thumb, function(err){ })
-						});
-					});
+					fs.mkdirSync(buf);
+					app.set(user, buf);
 				}
 
-				// redirect url
-				app.get("urls")[rand] = user + "," + end;
+				if (!app.get("thumb-" + user) || !fs.existsSync(app.get("thumb-" + user))){
+					var buf = path.join(app.get("thumb"), user);
 
-				try {
-					res.json({
-						status: 0,
-						url: require("./CONFIG.json").archive_prefix + rand
-					});
-				} catch (e){ }
-			});
+					fs.mkdirSync(buf);
+					app.set("thumb-" + user, buf);
+				}
+
+				var write = path.join(app.get(user), end),
+				    thumb = path.join(app.get("thumb-" + user), end);
+
+				var rand = undefined;
+
+				while (!rand || app.get("urls")[rand]){
+					rand = require("./utils").generate_string() + ext;
+				}
+
+				var fstream = fs.createWriteStream(write);
+				file.pipe(fstream);
+
+				// finish event
+				fstream.on("close", function(){
+					var img_exts = [".png", ".jpg", ".jpeg", ".gif"];
+
+					// thumb creation
+					if (!/^win/.test(process.platform) && img_exts.indexOf(ext) > -1){
+						require("lwip").open(write, function(err, image){
+							image.resize(100, function(err, image){
+								image.writeFile(thumb, function(err){ })
+							});
+						});
+					}
+
+					// redirect url
+					app.get("urls")[rand] = user + "," + end;
+
+					try {
+						res.json({
+							status: 0,
+							url: require("./CONFIG.json").archive_prefix + rand
+						});
+					} catch (e){ }
+				});
+			}
 		});
 	});
 
 	// generic listeners
 
-	app.post("/manage", parser, function(req, res){
+	app.post("/manage", parser, auth, function(req, res){
 		var utils = require("./utils"),
 		    data  = req.body,
 		    that  = this;

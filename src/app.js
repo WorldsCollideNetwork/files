@@ -63,26 +63,6 @@ app.use(function(req, res, next){
 	next();
 });
 
-
-// router middleware
-app.use(parser, function(req, res, next){
-	if (req.url.indexOf("/api/") == 0 || req.url.indexOf("/upload") == 0){
-		if (req.body && req.body.client_id && require("./utils").decrypt(req.body.client_id)){
-			next();
-		} else {
-			try {
-				res.json({
-					status: 2
-				});
-			} catch (e){
-				res.end();
-			}
-		}
-	} else {
-		next();
-	}
-});
-
 require("./router")(app, users);
 
 // HTTP protocol listener
