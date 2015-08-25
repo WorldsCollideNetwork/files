@@ -14,6 +14,13 @@ module.exports = function(app, users){
 	// POST listeners
 
 	app.post("/:var(api/upload|upload)", busboy, function(req, res){
+		req.pipe(req.busboy);
+
+		req.busboy.on("field", function(field, val){
+			if (!req.body) req.body = { };
+			req.body[field] = val;
+		});
+		
 		req.busboy.on("file", function(field, file, name){
 			var user = users.get(req.body.client_id),
 			    ext  = path.extname(name),
