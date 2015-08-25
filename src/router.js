@@ -13,8 +13,7 @@ module.exports = function(app, users){
 
 	// POST listeners
 
-	app.post("/:var(api/upload|upload)", busboy, function(req, res){
-		console.log("yey");
+	app.post("/api/upload", busboy, function(req, res){
 		req.pipe(req.busboy);
 
 		req.busboy.on("field", function(field, val){
