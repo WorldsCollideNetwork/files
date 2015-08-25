@@ -3,7 +3,7 @@ var http     = require("http"),
     fs       = require("fs"),
     express  = require("express"),
     cookie   = require("cookie-parser"),
-    busboy   = require("connect-busboy");
+    parser   = require("body-parser");;
 
 var app      = express(),
     server   = module.exports = http.Server(app);
@@ -47,7 +47,6 @@ require("./utils").get_dirs(app.get("thumb")).forEach(function(dir){
 // generic middleware
 app.use(express.static(app.get("views")));
 app.use(cookie());
-app.use(busboy());
 
 // jade and variable middleware
 app.use(function(req, res, next){
@@ -66,14 +65,7 @@ app.use(function(req, res, next){
 
 
 // router middleware
-app.use(function(req, res, next){
-	req.pipe(req.busboy);
-
-	req.busboy.on("field", function(field, val){
-		if (!req.body) req.body = { };
-		req.body[field] = val;
-	});
-
+app.use(parser.urlencoded(), function(req, res, next){
 	if (req.url.indexOf("/api/") == 0 || req.url.indexOf("/upload") == 0){
 		if (req.body && req.body.client_id && require("./utils").decrypt(req.body.client_id)){
 			next();
