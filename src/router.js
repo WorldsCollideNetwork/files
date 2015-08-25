@@ -10,6 +10,7 @@ module.exports = function(app, users){
 			if (next) return next();
 			return true;
 		} else {
+			console.log("test");
 			res.json({
 				status: 2
 			});
