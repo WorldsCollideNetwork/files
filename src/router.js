@@ -7,7 +7,7 @@ module.exports = function(app, users){
 	// authentication middleware
 	function auth(req, res, next){
 		if ((req.body && req.body.client_id && require("./utils").decrypt(req.body.client_id)) ||
-			(req.query && req.query.client_id && require("./utils").decrypt(req.query.client_id)){
+			(req.query && req.query.client_id && require("./utils").decrypt(req.query.client_id))){
 			if (next) return next();
 			return true;
 		} else {
