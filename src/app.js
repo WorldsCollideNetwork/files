@@ -2,10 +2,10 @@ var http     = require("http"),
     path     = require("path"),
     fs       = require("fs"),
     express  = require("express"),
-    cookie   = require("cookie-parser"),
-    parser   = require("body-parser");;
+    cookie   = require("cookie-parser");
 
-var app      = express(),
+var parser   = require("body-parser").urlencoded({ extended: true }),
+    app      = express(),
     server   = module.exports = http.Server(app);
 
 var users    = require("./users")(app);
@@ -65,7 +65,7 @@ app.use(function(req, res, next){
 
 
 // router middleware
-app.use(parser.urlencoded(), function(req, res, next){
+app.use(parser, function(req, res, next){
 	if (req.url.indexOf("/api/") == 0 || req.url.indexOf("/upload") == 0){
 		if (req.body && req.body.client_id && require("./utils").decrypt(req.body.client_id)){
 			next();
