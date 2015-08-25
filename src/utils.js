@@ -66,6 +66,19 @@ function Utils(){
 		return Math.random().toString(36).slice(2).substring(0, 5);
 	};
 
+	this.list = function(app, username){
+		var list = [];
+
+		for (var i in app.get("urls")){
+			if (app.get("urls").hasOwnProperty(i) && 
+				app.get("urls")[i].indexOf(username) == 0){
+				list.push(app.get("urls")[i].split(",")[1]);
+			}
+		}
+
+		return list;
+	};
+
 	this.thumbs = function(app, username){
 		var thumbs = { };
 

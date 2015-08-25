@@ -49,7 +49,7 @@ app.use(express.static(app.get("views")));
 app.use(cookie());
 app.use(busboy());
 
-// middleware for jade files
+// jade and variable middleware
 app.use(function(req, res, next){
 	res.locals.port = require("./CONFIG.json").port;
 	res.locals.version = fs.readFileSync(path.join(__dirname, "VERSION_DEVEL"), "utf8");
@@ -62,6 +62,33 @@ app.use(function(req, res, next){
 	}
 
 	next();
+});
+
+
+// router middleware
+app.use(function(req, res, next){
+	req.pipe(req.busboy);
+
+	req.busboy.on("field", function(field, val){
+		if (!req.body) req.body = { };
+		req.body[field] = val;
+	});
+
+	if (req.url.indexOf("/api/") == 0 || req.url.indexOf("/upload") == 0){
+		if (req.body && req.body.client_id && require("./utils").decrypt(req.body.client_id)){
+			next();
+		} else {
+			try {
+				res.json({
+					status: 2
+				});
+			} catch (e){
+				res.end();
+			}
+		}
+	} else {
+		next();
+	}
 });
 
 require("./router")(app, users);
