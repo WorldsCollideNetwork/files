@@ -1,19 +1,19 @@
 var path   = require("path"),
     fs     = require("fs"),
-    parser = require("body-parser"),
-    busboy = require("connect-busboy");
+    parser = require("body-parser").urlencoded({ extended: true }),
+    busboy = require("connect-busboy")();
 
 module.exports = function(app, users){
 	// GET listeners
 
-	app.get("/api/list", parser.urlencoded(), function(req, res){
+	app.get("/api/list", parser, function(req, res){
 		var utils = require("./utils");
 		return utils.list(app, utils.decrypt(req.query.client_id));
 	});
 
 	// POST listeners
 
-	app.post(["/api/upload", "/upload"], busboy(), function(req, res){
+	app.post(["/api/upload", "/upload"], busboy, function(req, res){
 		req.busboy.on("file", function(field, file, name){
 			var user = users.get(req.body.client_id),
 			    ext  = path.extname(name),
@@ -77,7 +77,7 @@ module.exports = function(app, users){
 
 	// generic listeners
 
-	app.post("/manage", parser.urlencoded(), function(req, res){
+	app.post("/manage", parser, function(req, res){
 		var utils = require("./utils"),
 		    data  = req.body,
 		    that  = this;
