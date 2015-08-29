@@ -50,6 +50,9 @@ app.use(express.static(app.get("views")));
 app.use(cookie());
 
 app.use(session({
+	secret: "thisreallydoesntmatter",
+	resave: false,
+	saveUninitialized: false,
 	cookie: {
 		path: "/",
 		domain: ".worldscolli.de",
