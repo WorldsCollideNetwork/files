@@ -3,6 +3,7 @@ var http     = require("http"),
     fs       = require("fs"),
     express  = require("express"),
     session  = require("express-session"),
+    cors     = require("cors"),
     cookie   = require("cookie-parser");
 
 var parser   = require("body-parser").urlencoded({ extended: true }),
@@ -47,6 +48,7 @@ require("./utils").get_dirs(app.get("thumb")).forEach(function(dir){
 
 // generic middleware
 app.use(express.static(app.get("views")));
+app.use(cors());
 app.use(cookie());
 
 app.use(session({
