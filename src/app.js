@@ -56,7 +56,7 @@ app.use(function(req, res, next){
 	res.locals.prefix = require("./CONFIG.json").archive_prefix;
 
 	if (req.cookies.client_id && require("./utils").decrypt(req.cookies.client_id)){
-		res.locals.user = require("./utils").decrypt(req.cookies.user);
+		res.locals.user = require("./utils").decrypt(req.cookies.client_id);
 		res.locals.id = req.cookies.client_id;
 	}
 
