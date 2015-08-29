@@ -67,7 +67,7 @@ require("./router")(app, users);
 
 // HTTP protocol listener
 app.get("*", function(req, res){
-	console.log(req.locals.user);
+	console.log(res.locals.user);
 	var url = req.url.split("?")[0];
 
 	if (url == "/"){
