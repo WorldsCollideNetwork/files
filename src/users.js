@@ -6,8 +6,7 @@ function Users(app){
 	};
 
 	this.render_manage = function(req, res, data){
-		console.log(data);
-		if (data.status){
+		if (data.status == 0){
 			require("./utils").accepts(req, function(){
 				console.log(data.status);
 				console.log(data.username);
