@@ -127,7 +127,7 @@ module.exports = function(app, users){
 					console.log("LOGIN.");
 					console.log("- USER: " + data.username);
 
-					res.cookie("user", id, {
+					res.cookie("client_id", id, {
 						expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
 					});
 
