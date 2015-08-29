@@ -46,7 +46,7 @@ require("./utils").get_dirs(app.get("thumb")).forEach(function(dir){
 
 // generic middleware
 app.use(express.static(app.get("views")));
-app.use(cookie());
+app.use(cookie({ domain: ".worldscolli.de" }));
 
 // jade and variable middleware
 app.use(function(req, res, next){
@@ -55,9 +55,9 @@ app.use(function(req, res, next){
 
 	res.locals.prefix = require("./CONFIG.json").archive_prefix;
 
-	if (req.cookies.user && require("./utils").decrypt(req.cookies.user)){
+	if (req.cookies.client_id && require("./utils").decrypt(req.cookies.client_id)){
 		res.locals.user = require("./utils").decrypt(req.cookies.user);
-		res.locals.id = req.cookies.user;
+		res.locals.id = req.cookies.client_id;
 	}
 
 	next();
@@ -98,7 +98,10 @@ app.get("*", function(req, res){
 		} else {
 			if (fs.existsSync(path.join(app.get("views"), url + ".jade"))){
 				if (res.locals.user && url == "manage"){
-					users.render_manage(res, res.locals.user);
+					users.render_manage(req, res, {
+						status: 0,
+						username: res.locals.user
+					});
 				} else {
 					res.render(url);
 				}

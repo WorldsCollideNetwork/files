@@ -97,6 +97,19 @@ function Utils(){
 		return thumbs;
 	};
 
+	this.accepts = function(req, json, html){
+		if (req && json && html){
+			switch (req.accepts(["json", "html"])){
+				case "html":
+					html();
+					break;
+				case "json":
+					json();
+					break;
+			}
+		}
+	};
+
 	this.save = function(data){
 		fs.writeFileSync("URLS.json", JSON.stringify(data, null, "\t"));
 	};

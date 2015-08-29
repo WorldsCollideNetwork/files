@@ -12,15 +12,9 @@ module.exports = function(app, users){
 			if (next) return next();
 			return true;
 		} else {
-			if (req.accepts("html") == "html"){
-				res.render("manage", {
-					status: 2
-				});
-			} else {
-				res.json({
-					status: 2
-				});
-			}
+			users.render_manage(req, res, {
+				status: 2
+			});
 		}
 	}
 
@@ -123,7 +117,7 @@ module.exports = function(app, users){
 			}
 		}, function(err, resp, body){
 			if (err || resp.statusCode != 200){
-				res.json({
+				users.render_manage(res, {
 					status: 1
 				});
 			} else {
@@ -137,9 +131,12 @@ module.exports = function(app, users){
 						expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
 					});
 
-					that.render_manage(res, data.username);
+					users.render_manage(res, {
+						status: 0,
+						username: data.username
+					});
 				} else {
-					res.render("manage", {
+					users.render_manage(res, {
 						status: 2
 					});
 				}

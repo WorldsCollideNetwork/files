@@ -5,12 +5,23 @@ function Users(app){
 		return utils.decrypt(client_id);
 	};
 
-	this.render_manage = function(res, username){
-		res.render("manage", {
-			status: 0,
-			id: require("./utils").encrypt(username),
-			thumbs: require("./utils").thumbs(app, username)
-		});
+	this.render_manage = function(req, res, data){
+		if (data.status){
+			require("./utils").accepts(req, function(){
+				res.json({
+					status: data.status,
+					id: data.username ? require("./utils").encrypt(username) : undefined
+				});
+			}, function(){
+				res.render("manage", {
+					status: data.status,
+					id: data.username ? require("./utils").encrypt(username) : undefined,
+					thumbs: data.username ? require("./utils").thumbs(app, username) : undefined
+				});
+			});
+		} else {
+			res.end();
+		}
 	};
 
 	return this;
