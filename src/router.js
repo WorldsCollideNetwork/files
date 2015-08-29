@@ -127,9 +127,7 @@ module.exports = function(app, users){
 					console.log("LOGIN.");
 					console.log("- USER: " + data.username);
 
-					res.cookie("client_id", id, {
-						expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
-					});
+					res.cookie("client_id", id);
 
 					users.render_manage(req, res, {
 						status: 0,

@@ -2,6 +2,7 @@ var http     = require("http"),
     path     = require("path"),
     fs       = require("fs"),
     express  = require("express"),
+    session  = require("express-session"),
     cookie   = require("cookie-parser");
 
 var parser   = require("body-parser").urlencoded({ extended: true }),
@@ -46,7 +47,15 @@ require("./utils").get_dirs(app.get("thumb")).forEach(function(dir){
 
 // generic middleware
 app.use(express.static(app.get("views")));
-app.use(cookie({ domain: ".worldscolli.de" }));
+app.use(cookie());
+
+app.use(session({
+	cookie: {
+		path: "/",
+		domain: ".worldscolli.de",
+		expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
+	}
+}));
 
 // jade and variable middleware
 app.use(function(req, res, next){
