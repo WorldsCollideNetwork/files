@@ -17,6 +17,9 @@ block content
 			each val, i in thumbs
 				div.thumb
 					a(href=i, target="_blank",style="background-image: url(" + val + ")")
+	else if status == 1
+		h2 Unable to Connect to WCN
+		p An error occured connecting to WCN. Please try again later.
 	else
 		h2 Invalid Credentials
 		p The credentials you entered are not correct.
