@@ -99,7 +99,6 @@ function Utils(){
 
 	this.accepts = function(req, json, html){
 		if (req && json && html){
-			console.log(req.accepts(["json", "html"]));
 			switch (req.accepts(["json", "html"])){
 				case "html":
 					html();
