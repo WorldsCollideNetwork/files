@@ -6,6 +6,7 @@ function Users(app){
 	};
 
 	this.render_manage = function(req, res, data){
+		console.log(data);
 		if (data.status){
 			require("./utils").accepts(req, function(){
 				console.log(data.status);
@@ -26,7 +27,6 @@ function Users(app){
 				});
 			});
 		} else {
-			console.log("test1");
 			res.end();
 		}
 	};
