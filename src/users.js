@@ -26,6 +26,7 @@ function Users(app){
 				});
 			});
 		} else {
+			console.log("test1");
 			res.end();
 		}
 	};
