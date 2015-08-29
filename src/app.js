@@ -55,8 +55,6 @@ app.use(function(req, res, next){
 
 	res.locals.prefix = require("./CONFIG.json").archive_prefix;
 
-	console.log(req.cookies);
-
 	if (req.cookies.client_id && require("./utils").decrypt(req.cookies.client_id)){
 		res.locals.user = require("./utils").decrypt(req.cookies.client_id);
 		res.locals.id = req.cookies.client_id;
@@ -69,6 +67,7 @@ require("./router")(app, users);
 
 // HTTP protocol listener
 app.get("*", function(req, res){
+	console.log(req.locals.user);
 	var url = req.url.split("?")[0];
 
 	if (url == "/"){
