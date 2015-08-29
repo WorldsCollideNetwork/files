@@ -104,6 +104,7 @@ function Utils(){
 					html();
 					break;
 				case "json":
+				default:
 					json();
 					break;
 			}

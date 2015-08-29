@@ -8,6 +8,9 @@ function Users(app){
 	this.render_manage = function(req, res, data){
 		if (data.status){
 			require("./utils").accepts(req, function(){
+				console.log(data.status);
+				console.log(data.username);
+				console.log(require("./utils").encrypt(username));
 				res.json({
 					status: data.status,
 					id: data.username ? require("./utils").encrypt(username) : undefined
