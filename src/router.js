@@ -131,12 +131,12 @@ module.exports = function(app, users){
 						expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
 					});
 
-					users.render_manage(res, {
+					users.render_manage(req, res, {
 						status: 0,
 						username: data.username
 					});
 				} else {
-					users.render_manage(res, {
+					users.render_manage(req, res, {
 						status: 2
 					});
 				}
