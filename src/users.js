@@ -10,13 +10,13 @@ function Users(app){
 			require("./utils").accepts(req, function(){
 				res.json({
 					status: data.status,
-					id: data.username ? require("./utils").encrypt(username) : undefined
+					id: data.username ? require("./utils").encrypt(data.username) : undefined
 				});
 			}, function(){
 				res.render("manage", {
 					status: data.status,
-					id: data.username ? require("./utils").encrypt(username) : undefined,
-					thumbs: data.username ? require("./utils").thumbs(app, username) : undefined
+					id: data.username ? require("./utils").encrypt(data.username) : undefined,
+					thumbs: data.username ? require("./utils").thumbs(app, data.username) : undefined
 				});
 			});
 		} else {
