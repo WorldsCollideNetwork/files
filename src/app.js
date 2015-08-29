@@ -57,7 +57,7 @@ app.use(session({
 	saveUninitialized: false,
 	cookie: {
 		path: "/",
-		domain: ".worldscolli.de",
+		domain: "worldscolli.de",
 		expires: new Date(Date.now() + (60 * 60 * 24 * 365 * 20 * 1000))
 	}
 }));
