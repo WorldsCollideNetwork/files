@@ -6,8 +6,7 @@ var http     = require("http"),
     cors     = require("cors"),
     cookie   = require("cookie-parser");
 
-var parser   = require("body-parser").urlencoded({ extended: true }),
-    app      = express(),
+var app      = express(),
     server   = module.exports = http.Server(app);
 
 var users    = require("./users")(app);
