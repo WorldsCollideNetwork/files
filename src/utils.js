@@ -97,14 +97,14 @@ function Utils(){
 		return thumbs;
 	};
 
-	this.remove = function(app, username, path){
-		if (path.indexOf("/") == 0) path = path.substring(1);
+	this.remove = function(app, username, full){
+		if (full.indexOf("/") == 0) full = full.substring(1);
 
-		if (app.get("urls")[path]){
-			var name = app.get("urls")[path].split(",")[1];
+		if (app.get("urls")[full]){
+			var name = app.get("urls")[full].split(",")[1];
 
 			fs.unlinkSync(path.join(app.get(username), name));
-			app.get("urls")[path] = undefined;
+			app.get("urls")[full] = undefined;
 
 			if (this.get_files(app.get("thumb-" + username)).indexOf(path) > -1)
 				fs.unlinkSync(path.join(app.get("thumb-" + username), name));
