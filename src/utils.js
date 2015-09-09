@@ -101,15 +101,21 @@ function Utils(){
 		if (full.indexOf("/") == 0) full = full.substring(1);
 
 		if (app.get("urls")[full]){
-			var name = app.get("urls")[full].split(",")[1];
+			var split = app.get("urls")[full].split(",");
 
-			fs.unlinkSync(path.join(app.get(username), name));
-			delete app.get("urls")[full];
+			if (split[0] == username){
+				var name = app.get("urls")[full].split(",")[1];
 
-			if (this.get_files(app.get("thumb-" + username)).indexOf(full) > -1)
-				fs.unlinkSync(path.join(app.get("thumb-" + username), name));
+				fs.unlinkSync(path.join(app.get(username), name));
+				delete app.get("urls")[full];
 
-			return 0;
+				if (this.get_files(app.get("thumb-" + username)).indexOf(full) > -1)
+					fs.unlinkSync(path.join(app.get("thumb-" + username), name));
+
+				return 0;
+			}
+
+			return 4;
 		} else {
 			return 3;
 		}
