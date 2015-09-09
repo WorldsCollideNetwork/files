@@ -87,7 +87,7 @@ function Utils(){
 				app.get("urls")[i].indexOf(username) == 0){
 				var file = app.get("urls")[i].split(",")[1];
 
-				if (require("./utils").get_files(
+				if (this.get_files(
 						app.get("thumb-" + username)).indexOf(file) > -1){
 					thumbs[i] = "/thumb/" + i;
 				}
@@ -95,6 +95,24 @@ function Utils(){
 		}
 
 		return thumbs;
+	};
+
+	this.remove = function(app, username, path){
+		if (path.indexOf("/") == 0) path = path.substring(1);
+
+		if (app.get("urls")[path]){
+			var name = app.get("urls")[path].split(",")[1];
+
+			fs.unlinkSync(path.join(app.get(user), name));
+			app.get("urls")[path] = undefined;
+
+			if (this.get_files(app.get("thumb-" + username)).indexOf(path) > -1)
+				fs.unlinkSync(path.join(app.get("thumb-" + username), name));
+
+			return 0;
+		} else {
+			return 3;
+		}
 	};
 
 	this.accepts = function(req, json, html){

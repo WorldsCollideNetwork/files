@@ -1,7 +1,6 @@
 var path   = require("path"),
     fs     = require("fs"),
-    p_json = require("body-parser").urlencoded({ extended: true }),
-    p_url  = require("body-parser").json(),
+    parser = require("body-parser").urlencoded({ extended: true })
     busboy = require("connect-busboy")();
 
 module.exports = function(app, users){
@@ -21,7 +20,7 @@ module.exports = function(app, users){
 
 	// GET listeners
 
-	app.get("/api/list", p_url, auth, function(req, res){
+	app.get("/api/list", parser, auth, function(req, res){
 		var utils = require("./utils");
 
 		res.json({
@@ -30,6 +29,20 @@ module.exports = function(app, users){
 	});
 
 	// POST listeners
+
+	app.post("/api/remove", parser, auth, function(req, res){
+		var utils = require("./utils");
+
+		if (req.body.path){
+			res.json({
+				status: utils.remove(app, utils.decrypt(req.body.client_id), req.body.path);
+			});
+		} else {
+			res.json({
+				status: 1
+			});
+		}
+	});
 
 	app.post("/api/upload", busboy, function(req, res){
 		req.pipe(req.busboy);
@@ -104,7 +117,7 @@ module.exports = function(app, users){
 
 	// generic listeners
 
-	app.post("/manage", p_json, auth, function(req, res){
+	app.post("/manage", parser, auth, function(req, res){
 		var utils = require("./utils"),
 		    data  = req.body,
 		    that  = this;
