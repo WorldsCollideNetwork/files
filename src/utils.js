@@ -76,6 +76,9 @@ function Utils(){
 			}
 		}
 
+		console.log("API: LIST.");
+		console.log("- USER: " + username);
+
 		return list;
 	};
 
@@ -111,6 +114,10 @@ function Utils(){
 
 				if (this.get_files(app.get("thumb-" + username)).indexOf(full) > -1)
 					fs.unlinkSync(path.join(app.get("thumb-" + username), name));
+
+				console.log("API: REMOVE.");
+				console.log("- USER: " + username);
+				console.log("- FILE: " + full);
 
 				return 0;
 			}
