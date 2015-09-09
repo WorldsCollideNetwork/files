@@ -20,7 +20,9 @@ function Users(app){
 				});
 			});
 		} else {
-			res.end();
+			res.json({
+				status: data.status
+			})
 		}
 	};
 
