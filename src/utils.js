@@ -106,7 +106,7 @@ function Utils(){
 			fs.unlinkSync(path.join(app.get(username), name));
 			app.get("urls")[full] = undefined;
 
-			if (this.get_files(app.get("thumb-" + username)).indexOf(path) > -1)
+			if (this.get_files(app.get("thumb-" + username)).indexOf(full) > -1)
 				fs.unlinkSync(path.join(app.get("thumb-" + username), name));
 
 			return 0;
