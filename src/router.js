@@ -35,7 +35,7 @@ module.exports = function(app, users){
 
 		if (req.body.path){
 			res.json({
-				status: utils.remove(app, utils.decrypt(req.body.client_id), req.body.path);
+				status: utils.remove(app, utils.decrypt(req.body.client_id), req.body.path)
 			});
 		} else {
 			res.json({
