@@ -103,7 +103,7 @@ function Utils(){
 		if (app.get("urls")[path]){
 			var name = app.get("urls")[path].split(",")[1];
 
-			fs.unlinkSync(path.join(app.get(user), name));
+			fs.unlinkSync(path.join(app.get(username), name));
 			app.get("urls")[path] = undefined;
 
 			if (this.get_files(app.get("thumb-" + username)).indexOf(path) > -1)
