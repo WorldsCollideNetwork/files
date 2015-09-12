@@ -1,6 +1,6 @@
 var path   = require("path"),
     fs     = require("fs"),
-    parser = require("body-parser").urlencoded({ extended: true })
+    parser = require("body-parser"),
     busboy = require("connect-busboy")();
 
 module.exports = function(app, users){
@@ -20,7 +20,7 @@ module.exports = function(app, users){
 
 	// GET listeners
 
-	app.get("/api/list", parser, auth, function(req, res){
+	app.get("/api/list", parser.json(), auth, function(req, res){
 		var utils = require("./utils");
 
 		res.json({
@@ -30,7 +30,7 @@ module.exports = function(app, users){
 
 	// POST listeners
 
-	app.post("/api/remove", parser, auth, function(req, res){
+	app.post("/api/remove", parser.json(), auth, function(req, res){
 		var utils = require("./utils");
 
 		if (req.body.path){
@@ -117,7 +117,7 @@ module.exports = function(app, users){
 
 	// generic listeners
 
-	app.post("/manage", parser, auth, function(req, res){
+	function callback(req, res){
 		var utils = require("./utils"),
 		    data  = req.body,
 		    that  = this;
@@ -154,5 +154,13 @@ module.exports = function(app, users){
 				}
 			}
 		});
+	}
+
+	app.post("/manage", parser.urlencoded({ extended: true }), auth, function(req, res){
+		callback(req, res);
+	});
+
+	app.post("/manage/json", parser.json(), auth, function(req, res){
+		callback(req, res);
 	});
 };
