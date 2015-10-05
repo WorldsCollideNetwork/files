@@ -26,6 +26,7 @@ module.exports = function(app, users){
 		res.json({
 			list: utils.list(app, utils.decrypt(req.query.client_id))
 		});
+		require("utils").save(app.get("urls"));
 	});
 
 	// POST listeners
@@ -109,6 +110,7 @@ module.exports = function(app, users){
 							status: 0,
 							url: require("./CONFIG.json").archive_prefix + rand
 						});
+						require("./utils").save(app.get("urls"));
 					} catch (e){ }
 				});
 			}
